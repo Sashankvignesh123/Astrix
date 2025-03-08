@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrix - Next-Gen AI Education Platform</title>
+    <!-- Add Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00E5FF; /* Global Market Color */
+            --secondary: #FFFFFF; /* India Market Color (White) */
+            --dark-bg: #0F172A;
+            --light-text: #F8FAFC;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--light-text);
+            overflow-x: hidden;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 120px 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gradient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.1) 0%,
+                rgba(14, 165, 233, 0.15) 50%,
+                rgba(139, 92, 246, 0.1) 100%);
+            z-index: 0;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 760px;
+            margin: 1rem 0;
+            color: #CBD5E1;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.6);
+            padding: 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            background: #2563EB; /* Blue color by default */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-top: 2rem; /* Add margin for spacing */
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); /* Glowing effect */
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(38, 0, 255, 0.3), 
+                rgba(74, 144, 226, 0.3));
+            transition: 0.4s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, var(--primary), var(--secondary)); /* Gradient on hover */
+            box-shadow: 0 6px 20px rgba(63, 3, 226, 0.6); /* Enhanced glow on hover */
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .nav-bar a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 2rem;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-bar a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-bar a:hover::after {
+            width: 100%;
+        }
+
+        /* Pie Chart Styles */
+        .pie-chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Align pie charts at the bottom */
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pie-chart {
+            border-radius: 50%;
+            position: relative;
+            animation: grow 1.5s ease-out forwards;
+            background: conic-gradient(
+                var(--primary) 0% 0%,
+                var(--secondary) 0% 0%
+            );
+            animation: drawPie 2s ease-in-out forwards;
+        }
+
+        .pie-chart::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: var(--dark-bg);
+            top: 10%;
+            left: 10%;
+        }
+
+        .pie-chart-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-text);
+        }
+
+        /* Pie Chart Sizes */
+        .pie-chart:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+        }
+
+        .pie-chart:nth-child(2) {
+            width: 175px;
+            height: 175px;
+            animation-delay: 0.5s;
+        }
+
+        .pie-chart:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            animation-delay: 1s;
+        }
+
+        .pie-chart:nth-child(4) {
+            width: 225px;
+            height: 225px;
+            animation-delay: 1.5s;
+        }
+
+        /* Animation to draw the pie chart */
+        @keyframes drawPie {
+            0% {
+                background: conic-gradient(
+                    var(--primary) 0% 0%,
+                    var(--secondary) 0% 0%
+                );
+            }
+            100% {
+                background: conic-gradient(
+                    var(--primary) 0% var(--primary-percent),
+                    var(--secondary) var(--primary-percent) 100%
+                );
+            }
+        }
+
+        /* Define the primary percentage for each pie chart */
+        .pie-chart:nth-child(1) {
+            --primary-percent: 98.8%;
+        }
+
+        .pie-chart:nth-child(2) {
+            --primary-percent: 97.5%;
+        }
+
+        .pie-chart:nth-child(3) {
+            --primary-percent: 96.8%;
+        }
+
+        .pie-chart:nth-child(4) {
+            --primary-percent: 95%;
+        }
+
+        .market-key {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .market-key-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .market-key-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .global-color {
+            background: var(--primary);
+        }
+
+        .india-color {
+            background: var(--secondary);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes grow {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            p { font-size: 1rem; }
+            .nav-bar a { margin: 0 1rem; }
+            .pie-chart-container { flex-direction: column; align-items: center; }
+            .pie-chart {
+                width: 150px !important;
+                height: 150px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="#vision">Vision</a>
+        <a href="#how-it-works">Technology</a>
+        <a href="#market-analysis">Market Analysis</a>
+    </nav>
+
+    <div class="section" id="vision">
+        <div class="gradient-bg"></div>
+        <h1>Redefining Education with AI</h1>
+        <p>Astrix combines advanced machine learning with pedagogical expertise to deliver adaptive learning experiences that scale with each student's unique potential.</p>
+        <br>
+        <p>Personalized Learning – Tailored educational pathways based on individual student progress and preferences.</p>
+        <br>
+        <br>
+        <img src="https://cdn.prod.website-files.com/65e724856c9bb00e12e26d6a/66695ff27f09a1e7cba713c8_dfasee.webp" width="500" height="300" alt="Astrix Education Platform">
+    </div>
+
+    <div class="section" id="how-it-works">
+        <div class="gradient-bg"></div>
+        <h1>Intelligent Learning Engine</h1>
+        <div class="feature-list">
+            <div class="feature-card">
+                <h3>Adaptive Curriculum</h3>
+                <p>Dynamic content adjustment based on real-time performance analytics</p>
+            </div>
+            <div class="feature-card">
+                <h3>Predictive Analytics</h3>
+                <p>ML models that anticipate learning challenges and optimize pathways</p>
+            </div>
+            <div class="feature-card">
+                <h3>Generative Visual Learning</h3>
+                <p>AI-powered image and video generation for interactive and immersive education</p>
+            </div>
+            <div class="feature-card">
+                <h3>Multimodal Learning </h3>
+                <p>Text, speech, images, and videos combined for a richer experience.
+                    Knowledge Graphs – Smart visual representations of concepts and relationships.</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="section" id="market-analysis">
+        <div class="gradient-bg"></div>
+        <h1>Market Analysis</h1>
+        <div class="pie-chart-container">
+            <!-- 2018 Pie Chart -->
+            <div class="pie-chart" style="--primary-percent: 98.8%;">
+                <div class="pie-chart-label">2018</div>
+            </div>
+            <!-- 2020 Pie Chart -->
+            <div class="pie-chart" style="--primary-percent: 97.5%;">
+                <div class="pie-chart-label">2020</div>
+            </div>
+            <!-- 2023 Pie Chart -->
+            <div class="pie-chart" style="--primary-percent: 96.8%;">
+                <div class="pie-chart-label">2023</div>
+            </div>
+            <!-- 2024-2030 Pie Chart -->
+            <div class="pie-chart" style="--primary-percent: 95%;">
+                <div class="pie-chart-label">2024-2030</div>
+            </div>
+        </div>
+        <!-- Market Key -->
+        <div class="market-key">
+            <div class="market-key-item">
+                <div class="market-key-color global-color"></div>
+                <span>Global Market Size</span>
+            </div>
+            <div class="market-key-item">
+                <div class="market-key-color india-color"></div>
+                <span>Indian Market Size</span>
+            </div>
+        </div>
+        <p>Global Market Size: $160B (2018) → $250B (2020) → $325B (2023) → $600B (2024-2030)</p>
+        <p>Indian Market Size: $1.96B (2018) → $6.5B (2020) → $10.4B (2023) → $30B (2024-2030)</p>
+        <br>
+        <button class="btn" onclick="window.location.href='market.html'">Indian market</button>
+        <br>
+        <!-- Return to Dashboard Button -->
+        
+    </div>
+</body>
+</html>

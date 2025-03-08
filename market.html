@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdTech Market Analysis</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #8B5CF6;
+            --dark-bg: #0F172A;
+            --light-text: #CBD5E1;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark-bg);
+            color: var(--light-text);
+        }
+
+        #market-analysis {
+            background: linear-gradient(45deg, 
+                rgba(15, 23, 42, 0.9),
+                rgba(30, 41, 59, 0.95));
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .chart-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        .line-graph-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(74, 144, 226, 0.15);
+        }
+
+        .chartjs-line {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-top: 2rem; /* Add margin for spacing */
+            box-shadow: 0 4px 15px rgba(116, 6, 219, 0.4); /* Glowing effect */
+            display: block;
+            margin: 2rem auto; /* Center horizontally */
+            text-align: center;
+
+
+            
+            
+
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(0, 229, 255, 0.3), 
+                rgba(74, 144, 226, 0.3));
+            transition: 0.4s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn:hover {
+            box-shadow: 0 6px 20px rgba(63, 3, 226, 0.6); /* Enhanced glow on hover */
+        }
+    </style>
+</head>
+<body>
+    <div id="market-analysis">
+        <h1 style="text-align: center; margin-bottom: 2rem;">Indian EdTech Market Insights</h1>
+        
+        <div class="line-graph-section">
+            <h3>Indian Market Growth Trajectory</h3>
+            <div class="chartjs-line">
+                <canvas id="marketChart"></canvas>
+            </div>
+        </div>
+        <button class="btn" onclick="window.location.href='index.html'">Return to Dashboard</button>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Get CSS variables properly
+        const root = document.documentElement;
+        const lightText = getComputedStyle(root).getPropertyValue('--light-text');
+
+        const ctx = document.getElementById('marketChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2018', '2020', '2023', '2030'],
+                datasets: [{
+                    label: 'Market Size (USD Billion)',
+                    data: [1.96, 6.5, 10.4, 30],
+                    borderColor: '#4A90E2',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                    pointBackgroundColor: '#4A90E2',
+                    pointBorderColor: '#fff',
+                    pointHoverRadius: 8,
+                    pointRadius: 5,
+                    borderDash: [5, 5]  // Dashed line for projections
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(74, 144, 226, 0.1)' },
+                        ticks: { 
+                            color: lightText,
+                            callback: value => `$${value}B`
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: lightText }
+                    }
+                },
+                plugins: {
+                    legend: { 
+                        labels: { 
+                            color: lightText,
+                            font: { size: 14 }
+                        } 
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                        titleColor: lightText,
+                        bodyColor: lightText,
+                        borderColor: '#4A90E2',
+                        borderWidth: 1,
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: ctx => ` ${ctx.dataset.label}: $${ctx.raw}B`
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+        
+    </script>
+
+</body>
+</html>
